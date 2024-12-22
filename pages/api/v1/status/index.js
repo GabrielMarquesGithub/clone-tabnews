@@ -1,4 +1,4 @@
-import { query } from "../../../../database/database";
+import { query } from "../../../../infra/database";
 
 const status = async (request, response) => {
   const result = await query("SELECT 1 + 1 AS sum;");
