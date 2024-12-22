@@ -1,9 +1,9 @@
 services:
   database:
     container_name: ${APP_NAME}-container-database
-    image: postgres:16.0-alpine3.18
     build:
-      context: .
+      context: ./infra
+    image: postgres:16.0-alpine3.18
     environment:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
