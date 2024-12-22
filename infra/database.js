@@ -9,10 +9,15 @@ const query = async (queryObj) => {
     database: process.env.DB_NAME,
   });
 
-  await client.connect();
-  const result = await client.query(queryObj);
-  await client.end();
-  return result;
+  try {
+    await client.connect();
+    const result = await client.query(queryObj);
+    return result;
+  } catch (error) {
+    console.error(error);
+  } finally {
+    await client.end();
+  }
 };
 
 export { query };
