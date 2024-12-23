@@ -10,6 +10,7 @@ beforeAll(async () => {
 
 describe("GET /api/v1/status", () => {
   it("should return status 200 and valid response body", () => {
+    // Status
     expect(response.status).toBe(200);
 
     // Updated at
