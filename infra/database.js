@@ -1,13 +1,13 @@
 import { Client } from "pg";
 
-const query = async (queryObj) => {
+async function query(queryObj) {
   const client = new Client({
     user: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     database: process.env.DB_NAME,
-    ssl: process.env.NODE_ENV === "production",
+    ssl: getSSLValues(),
   });
 
   try {
@@ -20,6 +20,15 @@ const query = async (queryObj) => {
   } finally {
     await client.end();
   }
-};
+}
+
+function getSSLValues() {
+  if (process.env.DB_CA) {
+    return {
+      ca: process.env.DB_CA,
+    };
+  }
+  return process.env.NODE_ENV === "production";
+}
 
 export { query };

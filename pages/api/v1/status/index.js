@@ -1,6 +1,6 @@
 import { query } from "infra/database";
 
-const status = async (_, response) => {
+export default async (_, response) => {
   const result = await query({
     text: `
       SELECT 
@@ -22,5 +22,3 @@ const status = async (_, response) => {
     },
   });
 };
-
-export default status;
