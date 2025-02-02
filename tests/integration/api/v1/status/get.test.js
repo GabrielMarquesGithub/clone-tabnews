@@ -29,7 +29,5 @@ describe("GET /api/v1/status", () => {
     expect(responseDatabase).toHaveProperty("current_connections");
     expect(typeof responseDatabase.current_connections).toBe("number");
     expect(responseDatabase.current_connections).toEqual(1);
-
-    console.log(responseDatabase);
   });
 });
