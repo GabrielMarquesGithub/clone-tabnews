@@ -3,45 +3,58 @@ import { join } from "node:path";
 import { getNewClient } from "infra/database";
 
 export default async (request, response) => {
-  if (!["GET", "POST"].includes(request.method)) {
+  const allowedMethods = ["GET", "POST"];
+
+  if (!allowedMethods.includes(request.method)) {
     return response.status(405).end();
   }
 
-  const dbClient = await getNewClient();
+  let dbClient;
 
-  const migrationRunnerConfig = {
-    dbClient,
-    databaseUrl: process.env.DATABASE_URL,
-    dir: join("infra", "migrations"),
-    direction: "up",
-    migrationsTable: "pgmigrations",
-    verbose: true,
-  };
+  try {
+    dbClient = await getNewClient();
 
-  if (request.method === "GET") {
-    const pendingMigrations = await migrationRunner({
-      ...migrationRunnerConfig,
-      dryRun: true,
-    });
+    const migrationRunnerConfig = {
+      dbClient,
+      databaseUrl: process.env.DATABASE_URL,
+      dir: join("infra", "migrations"),
+      direction: "up",
+      migrationsTable: "pgmigrations",
+      verbose: true,
+    };
 
-    await dbClient.end();
+    if (request.method === "GET") {
+      const pendingMigrations = await migrationRunner({
+        ...migrationRunnerConfig,
+        dryRun: true,
+      });
 
-    return response.status(200).json(pendingMigrations);
-  }
+      await dbClient.end();
 
-  if (request.method === "POST") {
-    const migratedMigrations = await migrationRunner({
-      ...migrationRunnerConfig,
-      dryRun: false,
-    });
-
-    await dbClient.end();
-
-    // Se existir migrations executadas, retornar 201
-    if (migratedMigrations.length > 0) {
-      return response.status(201).json(migratedMigrations);
+      return response.status(200).json(pendingMigrations);
     }
 
-    return response.status(200).json(migratedMigrations);
+    if (request.method === "POST") {
+      const migratedMigrations = await migrationRunner({
+        ...migrationRunnerConfig,
+        dryRun: false,
+      });
+
+      await dbClient.end();
+
+      // Se existir migrations executadas, retornar 201
+      if (migratedMigrations.length > 0) {
+        return response.status(201).json(migratedMigrations);
+      }
+
+      return response.status(200).json(migratedMigrations);
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  } finally {
+    if (dbClient) {
+      await dbClient.end();
+    }
   }
 };
