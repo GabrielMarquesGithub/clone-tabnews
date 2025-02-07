@@ -18,13 +18,9 @@ async function waitForAllServices() {
     });
 
     async function fetchStatusPage() {
-      try {
-        const response = await fetch(serverConfig.apiUrl + "/status");
-        if (!response.ok) {
-          throw new Error(`HTTP error status ${response.status}`);
-        }
-      } catch (error) {
-        throw error;
+      const response = await fetch(serverConfig.apiUrl + "/status");
+      if (!response.ok) {
+        throw new Error(`HTTP error status ${response.status}`);
       }
     }
   }
