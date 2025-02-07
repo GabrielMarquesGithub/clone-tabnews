@@ -2,7 +2,7 @@ import migrationRunner from "node-pg-migrate";
 import { join } from "node:path";
 import { getNewClient } from "infra/database";
 
-export default async (request, response) => {
+async function getMigration(request, response) {
   const allowedMethods = ["GET", "POST"];
 
   if (!allowedMethods.includes(request.method)) {
@@ -57,4 +57,6 @@ export default async (request, response) => {
       await dbClient.end();
     }
   }
-};
+}
+
+export default getMigration;
