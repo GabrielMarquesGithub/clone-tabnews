@@ -9,6 +9,7 @@ const createJestConfig = nextJest({
 
 const jestConfig = createJestConfig({
   moduleDirectories: ["node_modules", "<rootDir>"],
+  testTimeout: 60 * 1000, // 1 minuto
 });
 
 module.exports = jestConfig;

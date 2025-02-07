@@ -13,13 +13,12 @@ function checkPostgres() {
 
   function handleReturn(_, output, error) {
     if (output.includes("accepting connections")) {
-      console.log("\n🟢 Postgres esta aceitando conexões.");
-      return;
+      console.log("\n🟢 Postgres esta aceitando conexões.\n\n");
     } else {
       process.stdout.write(".");
 
       if (retries > 10) {
-        console.error("\n🔴 " + error);
+        console.error("\n🔴 " + error + "\n\n");
         process.exit(1);
       }
 

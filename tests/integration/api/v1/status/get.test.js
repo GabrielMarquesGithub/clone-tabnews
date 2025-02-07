@@ -1,9 +1,13 @@
+import { waitForAllServices } from "tests/orchestrator";
+import { serverConfig } from "configs/serverConfig";
+
 let response;
 let responseBody;
 let responseDatabase;
 
 beforeAll(async () => {
-  response = await fetch("http://localhost:3000/api/v1/status");
+  await waitForAllServices();
+  response = await fetch(serverConfig.apiUrl + "/status");
   responseBody = await response.json();
   responseDatabase = responseBody.dependencies.database;
 });
