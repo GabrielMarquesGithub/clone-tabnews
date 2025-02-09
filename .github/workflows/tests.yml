@@ -3,8 +3,8 @@ name: Automated Tests
 on: pull_request
 
 jobs:
-  jest:
-    name: Jest Ubuntu
+  setup:
+    name: Setup
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -13,6 +13,19 @@ jobs:
         with:
           node-version: "lts/hydrogen"
 
+      - name: Cache npm dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}
+
       - run: npm ci
 
+  jest:
+    name: Jest Ubuntu
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
       - run: npm test
