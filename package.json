@@ -4,7 +4,7 @@
   "description": "teste",
   "main": "index.js",
   "scripts": {
-    "dev": "(trap 'npm run services:stop' INT; npm run services:up && npm run services:wait:database && npm run migrations:up && next dev)",
+    "dev": "npm run services:up && npm run services:wait:database && npm run migrations:up && (trap 'npm run services:stop' INT TERM HUP; next dev)",
     "test": "npm run services:up && concurrently -k --success command-jest -n next,jest --hide next  \"next dev\" \"jest --runInBand\"",
     "posttest": "npm run services:stop",
     "test:watch": "jest --runInBand --watchAll",
