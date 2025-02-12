@@ -1,14 +1,9 @@
-import { query } from "infra/database";
-import { waitForAllServices } from "tests/orchestrator";
+import { waitForAllServices, clearDatabase } from "tests/orchestrator";
 import { serverConfig } from "configs/serverConfig";
-
-async function cleanDatabase() {
-  await query("drop schema public cascade; create schema public;");
-}
 
 beforeAll(async () => {
   await waitForAllServices();
-  await cleanDatabase();
+  await clearDatabase();
 });
 
 describe("GET /migrations", () => {
