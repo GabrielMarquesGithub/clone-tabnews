@@ -11,30 +11,31 @@ beforeAll(async () => {
   await cleanDatabase();
 });
 
-describe("POST /api/v1/migrations", () => {
-  it("should return status 200 and valid response body", async () => {
-    const response1 = await fetch(serverConfig.apiUrl + "/migrations", {
-      method: "POST",
+describe("POST /migrations", () => {
+  describe("Anonymous user", () => {
+    describe("Running pending migrations", () => {
+      it("For the first time", async () => {
+        const response = await fetch(serverConfig.apiUrl + "/migrations", {
+          method: "POST",
+        });
+        const responseBody = await response.json();
+
+        expect(response.status).toBe(201);
+
+        expect(Array.isArray(responseBody)).toBe(true);
+        expect(responseBody.length).toBeGreaterThan(0);
+      });
+      it("For the second time", async () => {
+        const response = await fetch(serverConfig.apiUrl + "/migrations", {
+          method: "POST",
+        });
+        const responseBody = await response.json();
+
+        expect(response.status).toBe(200);
+
+        expect(Array.isArray(responseBody)).toBe(true);
+        expect(responseBody.length).toBe(0);
+      });
     });
-    const response1Body = await response1.json();
-
-    // Status
-    expect(response1.status).toBe(201);
-
-    // Body
-    expect(Array.isArray(response1Body)).toBe(true);
-    expect(response1Body.length).toBeGreaterThan(0);
-
-    const response2 = await fetch(serverConfig.apiUrl + "/migrations", {
-      method: "POST",
-    });
-    const response2Body = await response2.json();
-
-    // Status
-    expect(response2.status).toBe(200);
-
-    // Body
-    expect(Array.isArray(response2Body)).toBe(true);
-    expect(response2Body.length).toBe(0);
   });
 });
