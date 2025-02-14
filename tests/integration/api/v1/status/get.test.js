@@ -1,5 +1,4 @@
-import { waitForAllServices } from "tests/orchestrator";
-import { serverConfig } from "configs/serverConfig";
+import { waitForAllServices, apiUrl } from "tests/orchestrator";
 
 beforeAll(async () => {
   await waitForAllServices();
@@ -8,7 +7,7 @@ beforeAll(async () => {
 describe("GET /status", () => {
   describe("Anonymous user", () => {
     it("Getting current system status", async () => {
-      const response = await fetch(serverConfig.apiUrl + "/status");
+      const response = await fetch(apiUrl + "/status");
       const responseBody = await response.json();
       const responseDatabase = responseBody.dependencies.database;
 
