@@ -37,11 +37,11 @@ export default function Status() {
       {hasData && (
         <>
           <p>Ultima atualização: {formatDate(data.updated_at)}</p>
-          <p>Informações do banco de dados</p>
+          <p>Informações do Banco de Dados Postgres</p>
           <ul>
-            <li>Database version: {databaseData.version}</li>
-            <li>Database status: {databaseData.current_connections}</li>
-            <li>Database uptime: {databaseData.max_connections}</li>
+            <li>Versão: {databaseData.version}</li>
+            <li>Conexões abertas: {databaseData.current_connections}</li>
+            <li>Máximo de conexões: {databaseData.max_connections}</li>
           </ul>
         </>
       )}
