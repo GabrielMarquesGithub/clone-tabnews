@@ -1,6 +1,6 @@
 import { query } from "infra/database";
 
-async function getStatus(_, response) {
+export default async function getStatus(_, response) {
   const result = await query({
     text: `
       SELECT 
@@ -22,5 +22,3 @@ async function getStatus(_, response) {
     },
   });
 }
-
-export default getStatus;
