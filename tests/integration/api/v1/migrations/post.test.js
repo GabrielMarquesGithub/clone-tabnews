@@ -1,5 +1,4 @@
-import { waitForAllServices, clearDatabase } from "tests/orchestrator";
-import { serverConfig } from "configs/serverConfig";
+import { waitForAllServices, clearDatabase, apiUrl } from "tests/orchestrator";
 
 beforeAll(async () => {
   await waitForAllServices();
@@ -10,7 +9,7 @@ describe("POST /migrations", () => {
   describe("Anonymous user", () => {
     describe("Running pending migrations", () => {
       it("For the first time", async () => {
-        const response = await fetch(serverConfig.apiUrl + "/migrations", {
+        const response = await fetch(apiUrl + "/migrations", {
           method: "POST",
         });
         const responseBody = await response.json();
@@ -21,7 +20,7 @@ describe("POST /migrations", () => {
         expect(responseBody.length).toBeGreaterThan(0);
       });
       it("For the second time", async () => {
-        const response = await fetch(serverConfig.apiUrl + "/migrations", {
+        const response = await fetch(apiUrl + "/migrations", {
           method: "POST",
         });
         const responseBody = await response.json();

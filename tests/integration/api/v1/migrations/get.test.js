@@ -1,5 +1,4 @@
-import { waitForAllServices, clearDatabase } from "tests/orchestrator";
-import { serverConfig } from "configs/serverConfig";
+import { waitForAllServices, clearDatabase, apiUrl } from "tests/orchestrator";
 
 beforeAll(async () => {
   await waitForAllServices();
@@ -9,7 +8,7 @@ beforeAll(async () => {
 describe("GET /migrations", () => {
   describe("Anonymous user", () => {
     it("Getting pending migrations", async () => {
-      const response = await fetch(serverConfig.apiUrl + "/migrations");
+      const response = await fetch(apiUrl + "/migrations");
       const responseBody = await response.json();
 
       expect(response.status).toBe(200);

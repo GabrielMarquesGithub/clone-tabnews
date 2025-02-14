@@ -1,7 +1,8 @@
 import retry from "async-retry";
 
-import { serverConfig } from "../configs/serverConfig";
 import { query } from "infra/database";
+
+const apiUrl = "http://localhost:3000/api/v1";
 
 async function waitForAllServices() {
   await waitForWebServer();
@@ -20,7 +21,7 @@ async function waitForAllServices() {
     });
 
     async function fetchStatusPage() {
-      const response = await fetch(serverConfig.apiUrl + "/status");
+      const response = await fetch(apiUrl + "/status");
       if (!response.ok) {
         throw new Error(`HTTP error status ${response.status}`);
       }
@@ -32,4 +33,4 @@ async function clearDatabase() {
   await query("drop schema public cascade; create schema public;");
 }
 
-export { waitForAllServices, clearDatabase };
+export { waitForAllServices, clearDatabase, apiUrl };
