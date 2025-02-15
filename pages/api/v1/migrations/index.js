@@ -1,8 +1,17 @@
 import migrationRunner from "node-pg-migrate";
 import { resolve } from "node:path";
-import { getNewClient } from "infra/database";
+import { createRouter } from "next-connect";
 
-export default async function getMigration(request, response) {
+import { getNewClient } from "infra/database";
+import { errorMiddleware } from "infra/middlewares";
+
+const router = createRouter();
+
+router.get(getHandler).post(getHandler);
+
+export default router.handler(errorMiddleware);
+
+async function getHandler(request, response) {
   const allowedMethods = ["GET", "POST"];
 
   if (!allowedMethods.includes(request.method)) {
